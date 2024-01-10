@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:uuid/uuid.dart';
+
 
 class TcpClient {
   late Socket _socket;
@@ -29,6 +31,11 @@ class TcpClient {
         _socket.destroy();
       },
     );
+
+    String randomId(){
+      var uuid = Uuid();
+      return uuid.v4();
+    }
   }
 
   // Send message to the server

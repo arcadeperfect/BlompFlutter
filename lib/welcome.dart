@@ -10,6 +10,7 @@ class Welcome extends StatelessWidget {
         child: ElevatedButton(
           child: const Text('Scan QR'),
           onPressed: () {
+            print("pressed");
             Navigator.pushNamed(context, '/scanner');
           },
         ),
