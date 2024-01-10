@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'QR Scan App',
-      initialRoute: '/',
+      initialRoute: '/scanFound',
       routes: {
         '/': (context) => welcome(),
         '/scanner': (context) => Scanner(),
