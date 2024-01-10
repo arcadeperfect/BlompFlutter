@@ -25,8 +25,8 @@ class ScanFound extends StatelessWidget {
   }
 
   void onPressedConnect(BuildContext context) async {
-    final AppState appState = Provider.of<AppState>(context, listen: false);
-    String? serverAddress = appState.serverAddress;
+    final MyAppState appState = Provider.of<MyAppState>(context, listen: false);
+    String? serverAddress = appState.serverAddress?.address;
     int? handShakePort = appState.handShakePort;
 
     if (serverAddress == null || handShakePort == null) {
@@ -53,7 +53,8 @@ class ScanFound extends StatelessWidget {
         else {
           appState.setUniquePort(newPort as int);
           tcp.disconnect();
-          print(appState.uniquePort);
+          print('unique port: ${appState.uniquePort}');
+          Navigator.pushNamed(context, '/sendOsc');
         }
       },
     );

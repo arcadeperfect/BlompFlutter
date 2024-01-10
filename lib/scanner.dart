@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +25,6 @@ class _ScannerState extends State<Scanner> {
 
   @override
   Widget build(BuildContext context) {
-    print("build scanner");
     return Scaffold(
       body: MobileScanner(
         controller: controller,
@@ -56,8 +57,8 @@ class _ScannerState extends State<Scanner> {
     }
 
     // Update AppState
-    final appState = Provider.of<AppState>(context, listen: false);
-    appState.setServerAddress(address);
+    final appState = Provider.of<MyAppState>(context, listen: false);
+    appState.setServerAddress(InternetAddress(address));
     appState.setHandShakePort(port);
 
     // Navigate to the next screen

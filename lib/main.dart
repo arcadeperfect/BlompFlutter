@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:party/appState.dart';
 import 'package:party/scanFound.dart';
 import 'package:party/scanner.dart';
+import 'package:party/sendOsc.dart';
 import 'package:party/welcome.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => AppState(),
+      create: (context) => MyAppState(),
       child: MyApp(),
     ),
   );
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => welcome(),
         '/scanner': (context) => Scanner(),
         '/scanFound': (context) => ScanFound(),
+        '/sendOsc': (context) => SendOSC(),
       },
     );
   }
@@ -40,5 +42,9 @@ class MyApp extends StatelessWidget {
 
   Widget scanFound() {
     return ScanFound();
+  }
+
+  Widget sendOsc() {
+    return SendOSC();
   }
 }
