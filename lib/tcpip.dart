@@ -1,41 +1,36 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:uuid/uuid.dart';
-
+// import 'package:uuid/uuid.dart';
 
 class TcpClient {
   late Socket _socket;
+  Function(String)? onDataReceived;
 
-  // Connect to the server
+  void setOnDataReceivedCallback(Function(String) callback) {
+    onDataReceived = callback;
+  }
+
   Future<void> connect(String host, int port) async {
     _socket = await Socket.connect(host, port);
     print('Connected to: ${_socket.remoteAddress.address}:${_socket.remotePort}');
 
-    // Listen for responses from the server
     _socket.listen(
-      // Handle data from the server
       (data) {
         final serverResponse = String.fromCharCodes(data);
         print('Server: $serverResponse');
+        onDataReceived?.call(serverResponse); 
       },
 
-      // Handle errors
       onError: (error) {
         print('Error: $error');
         _socket.destroy();
       },
 
-      // Handle server ending connection
       onDone: () {
         print('Server left.');
         _socket.destroy();
       },
     );
-
-    String randomId(){
-      var uuid = Uuid();
-      return uuid.v4();
-    }
   }
 
   // Send message to the server

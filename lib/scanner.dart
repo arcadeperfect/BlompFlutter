@@ -1,7 +1,5 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
 import 'package:provider/provider.dart';
 import 'package:party/appState.dart';
 
@@ -25,6 +23,7 @@ class _ScannerState extends State<Scanner> {
 
   @override
   Widget build(BuildContext context) {
+    print("build scanner");
     return Scaffold(
       body: MobileScanner(
         controller: controller,
@@ -40,15 +39,21 @@ class _ScannerState extends State<Scanner> {
     );
   }
 
-  // void switchState(String result, BuildContext context) {
-  //   Navigator.pushNamed(context, '/scanFound');
-  // }
   void switchState(String result, BuildContext context) {
-    // Extract the desired data from the result
-    // For example, if result is a string with address and port separated by a comma
+
     final parts = result.split(',');
+    if(parts.length != 2) {
+      throw Exception('parts.length != 2');
+    }
     final address = parts[0];
-    final port = int.tryParse(parts[1]) ?? 0;
+    if(!isValidIPv4(address)) {
+      throw Exception('address is not valid');
+    }
+    final port = int.tryParse(parts[1]) ?? null;
+
+    if(port == null) {
+      throw Exception('port is not valid');
+    }
 
     // Update AppState
     final appState = Provider.of<AppState>(context, listen: false);
@@ -58,6 +63,15 @@ class _ScannerState extends State<Scanner> {
     // Navigate to the next screen
     Navigator.pushNamed(context, '/scanFound');
   }
+
+
+  bool isValidIPv4(String ip) {
+  final ipv4Regex = RegExp(
+    r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}'
+    r'(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$');
+  return ipv4Regex.hasMatch(ip);
+}
+
 
   @override
   void dispose() {
