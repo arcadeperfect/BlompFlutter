@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:party/scanFound.dart';
+import 'package:party/scanner.dart';
 // import 'package:party/scanner.dart';
 import 'package:party/welcome.dart';
 // import 'package:party/scanFound.dart';
@@ -6,10 +8,12 @@ import 'package:party/welcome.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,14 +21,22 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => welcome(),
-        // '/scanner': (context) => Scanner(),
-        // '/scanFound': (context) => ScanFound(),
+        '/scanner': (context) => Scanner(),
+        '/scanFound': (context) => ScanFound(),
       },
     );
   }
 
   Widget welcome() {
     return const Welcome();
+  }
+
+  Widget scanner() {
+    return Scanner();
+  }
+
+  Widget scanFound() {
+    return ScanFound();
   }
 }
 

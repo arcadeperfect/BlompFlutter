@@ -8,7 +8,7 @@ class Welcome extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          child: Text('Scan QR'),
+          child: const Text('Scan QR'),
           onPressed: () {
             Navigator.pushNamed(context, '/scanner');
           },
