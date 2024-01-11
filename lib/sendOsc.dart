@@ -14,28 +14,44 @@ class SendOSC extends StatefulWidget {
 
 class _SendOSCState extends State<SendOSC> {
   late OSCSender oscSender;
+  double sliderValue = 0.5; // Initial value for the slider
 
   @override
   Widget build(BuildContext context) {
     final MyAppState appState = Provider.of<MyAppState>(context, listen: false);
-    // if(appState.serverAddress == null || appState.uniquePort == null) {
-    //   return;
-    // }
     oscSender = OSCSender(
         appState.serverAddress as InternetAddress, appState.uniquePort as int);
 
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          child: const Text('Send OSC'),
-          onPressed: () {
-            oscSender.SendFloat(0.5, '/test');
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Slider(
+              min: 0,
+              max: 1,
+              value: sliderValue, // Use the state variable here
+              onChanged: (double value) {
+                setState(() {
+                  sliderValue = value; // Update the state variable
+                });
+                oscSender.SendFloat(value, '/size'); // Send OSC message
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Blomp'),
+              onPressed: () {
+                oscSender.SendPress('/jump');
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 
 class OSCSender {
   final InternetAddress ipAddress;
@@ -48,6 +64,22 @@ class OSCSender {
 
   void SendFloat(double value, String oscAddress) async {
     var message = OSCMessage(oscAddress, arguments: [value]);
+    var oscSocket = OSCSocket(
+      destination: InternetAddress(ipAddress.address),
+      destinationPort: port,
+    );
+
+    print('sending $message to $destination:$port');
+
+    await oscSocket.setupSocket();
+    await oscSocket.send(message);
+    oscSocket.close();
+
+    print('sent $message to $destination:$port');
+  }
+
+  void SendPress(String oscAddress) async {
+    var message = OSCMessage(oscAddress, arguments: []);
     var oscSocket = OSCSocket(
       destination: InternetAddress(ipAddress.address),
       destinationPort: port,

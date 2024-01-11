@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:party/tcpip.dart';
 import 'package:provider/provider.dart';
 import 'package:party/appState.dart';
+// import 'package:platform_device_id/platform_device_id.dart';
 import 'package:uuid/uuid.dart';
 
 class ScanFound extends StatelessWidget {
@@ -17,7 +18,7 @@ class ScanFound extends StatelessWidget {
         Center(
             child: ElevatedButton(
               onPressed: () => onPressedConnect(context),
-          child: const Text('TestConnect'),
+          child: const Text('Connect'),
         )),
         // Center(child: ElevatedButton(onPressed: onPressedSend, child: const Text('TestSend'),)),]
       ]),
@@ -38,7 +39,16 @@ class ScanFound extends StatelessWidget {
     
     print('server address is $serverAddress'    'handShakePort is $handShakePort');
 
-    tcp.sendMessage(randomId());
+    // var id = await futureRandomId();
+
+    // if(id == null){
+    //   throw Exception('id is null');
+    // }
+
+    var id = randomId();
+
+    print('id is $id');
+    tcp.sendMessage(id);
     tcp.setOnDataReceivedCallback(
       (String response) {
         int? newPort = int.tryParse(response) ?? null;
@@ -60,7 +70,17 @@ class ScanFound extends StatelessWidget {
     );
   }
 
-  String randomId() {
+  // Future<String?> futureRandomId() async{
+  //   var uuid = Uuid();
+
+  //   // var deviceId = PlatformDeviceId.getDeviceId;
+
+  //   // var deviceId = "test";
+
+  //   return deviceId;
+  // }
+
+  String randomId(){
     var uuid = Uuid();
     return uuid.v4();
   }

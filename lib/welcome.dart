@@ -17,11 +17,11 @@ class Welcome extends StatelessWidget {
           child: const Text('Scan QR'),
           onPressed: () {
             print("pressed");
-            // Navigator.pushNamed(context, '/scanner');
+            Navigator.pushNamed(context, '/scanner');
 
-            appState.setServerAddress(InternetAddress('10.100.4.110'));
-            appState.setHandShakePort(8000);
-            Navigator.pushNamed(context, '/scanFound');
+            // appState.setServerAddress(InternetAddress('10.100.4.110'));
+            // appState.setHandShakePort(8000);
+            // Navigator.pushNamed(context, '/scanFound');
 
           },
         ),
